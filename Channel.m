@@ -24,28 +24,8 @@ classdef Channel
         end
         
         function varargout=impulse(obj, varargin)
-            H = obj.s21;
-            %H_s = [conj(fliplr(H(2:end-1))) -H]; % Symmetric frequency response
-            %h = ifft(fftshift(H_s),'symmetric')
             
-            
-            L = length(obj.s21);
-            H_neg = conj(fliplr(H(2:end-1)));
-            H_s = [H H_neg];
-            ts = 1;
-            h = ifft(H_s)/ts;
-            
-            % Debug
-            y = H_s;
-            plot(0:1:length(y)-1, 20*log(abs(y)));
-            
-            % Computing the time series
-            df = obj.freqs(end) - obj.freqs(end-1);
-            T = 1/df;
-            N = length(h) - 1;
-            dt = T/(length(h));
-            t=linspace(0,N*dt,N+1);
-            
+            [h t] = ifft_t(obj.s21, obj.freqs);
             varargout{1} = h;
             if nargout == 2
                 varargout{2} = t;

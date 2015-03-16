@@ -9,17 +9,14 @@ function [ y t ] = ifft_t( Y, f)
 
 % Convert single sided spectrum to double sided
 if (min(f) >= 0)
-    Y = [Y(1:end-1) -1*fliplr(Y(2:end))]
-    f = [f(1:end-1) -1*fliplr(f(2:end))]
-    %Y = [fliplr(Y(1:end-1)) Y];
-    %f = [-1*fliplr(f(1:end-1)) f];
+    [Y f] = ss_to_ds(Y, f)
 end
 
 N = length(Y);
 y = N*(ifft(Y));
 
 % Calculate the time values
-dt = 1/(2*max(f));
+dt = 1/(2*max(abs(f)));
 t = 0:dt:(N-1)*dt;
 
 
