@@ -19,11 +19,8 @@ end
 
 % Tx channel distortion
 %h_tx = [.95 .15 .05 0 0];
-
 %h_tx = [0.9 .1 0 0 .0];
-
 h_tx = [.6 .2 -0.05 .0 .1];
-
 
 % convolve channel with the input
 x = filter(h_tx, 1, tx);
@@ -58,13 +55,9 @@ for n  = N_taps+1 : length(x);
     y_h(n) = sign(z(n));
 
     % compute error
-    ep = z(n) > vref;
-    en = z(n) > -1*vref;
     if ( y_h(n) > 0)
-        e(n) = ep;
         e(n) = z(n) - vref;
     else
-        e(n) = en;
         e(n) = z(n) + vref;
     end
     
